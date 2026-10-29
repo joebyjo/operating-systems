@@ -151,7 +151,25 @@ int main(int argc, char **argv) {
 	double start_time;
 	double sorting_time;
 
-	// sort the input (and time it)
+	// test single threaded merge sort
+	start_time = getMilliSeconds();
+	my_mergesort(0, n-1);
+	sorting_time = getMilliSeconds() - start_time;
+
+	if (check_if_sorted(A, n)) {
+		printf("single threaded sorting took %4.2lf seconds.\n",
+			sorting_time / 1000.0);
+	} else {
+		printf("single threaded sorting failed!\n");
+		free(B);
+		free(A);
+		exit(EXIT_FAILURE);
+	}
+
+	// generate same input for parallel
+	generate_random_array(A, n, seed);
+
+	// test parallel
 	start_time = getMilliSeconds();
 	/* first index is 0, last index is n-1, we consider the main thread as level 0 */
 	struct argument *arg=buildArgs(0, n-1, 0);
