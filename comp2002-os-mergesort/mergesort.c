@@ -31,11 +31,17 @@ void my_mergesort(int left, int right){
 
 /* this function will be called by the testing program. */
 void * parallel_mergesort(void *arg){
-		return NULL;
+	struct argument *a = arg;
+	printf("left: %d, right: %d, level: %d\n", a->left, a->right, a->level);
+	return NULL;
 }
 
 /* we build the argument for the parallel_mergesort function. */
 struct argument * buildArgs(int left, int right, int level){
-		return NULL;
+    struct argument *p = malloc(sizeof(struct argument));
+    p->left = left;
+    p->right = right;
+    p->level = level;
+    return p;
 }
 
