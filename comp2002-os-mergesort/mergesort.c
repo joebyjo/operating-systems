@@ -40,6 +40,12 @@ void * parallel_mergesort(void *arg){
     // base case
     if (left >= right) return NULL;
 
+    // stop creating threads after cutoff
+    if (level >= cutoff) {
+        my_mergesort(left, right);
+        return NULL;
+    }
+
     my_mergesort(left, right);
 
     return NULL;
