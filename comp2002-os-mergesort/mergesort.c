@@ -56,7 +56,26 @@ void * parallel_mergesort(void *arg){
         return NULL;
     }
 
-    my_mergesort(left, right);
+    int mid = left + (right - left) / 2;
+
+    // build arguments for left right
+    struct argument *args_left = buildArgs(left, mid, level + 1);
+    struct argument *args_right = buildArgs(mid + 1, right, level + 1);
+
+    pthread_t left_thread, right_thread;
+
+    // create thread and recurse
+    pthread_create(&left_thread, NULL, parallel_mergesort, args_left);
+    pthread_create(&right_thread, NULL, parallel_mergesort, args_right);
+
+    pthread_join(left_thread, NULL);
+    pthread_join(right_thread, NULL);
+
+    free(args_left);
+    free(args_right);
+
+    // merge
+    merge(left, mid, mid + 1, right);
 
     return NULL;
 }
